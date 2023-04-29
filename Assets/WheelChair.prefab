@@ -370,6 +370,7 @@ GameObject:
   - component: {fileID: 1012190085627277136}
   - component: {fileID: 1012190085627277139}
   - component: {fileID: 1012190085627277138}
+  - component: {fileID: 3010488983879066676}
   m_Layer: 0
   m_Name: WheelChair
   m_TagString: Untagged
@@ -442,6 +443,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+    startingArmAngle: 0
     armAngle: 0
   - wheel: {fileID: 1012190085981673391}
     armTarget: {fileID: 1012190087085556227}
@@ -473,6 +475,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+    startingArmAngle: 0
     armAngle: 0
   angleSpeed: 90
 --- !u!95 &1012190085627277139
@@ -511,6 +514,21 @@ MonoBehaviour:
   - m_Rig: {fileID: 1012190085225934854}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &3010488983879066676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012190085627277132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a11f9e45d8affaf49a4dfdf730076c97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  rotationSpeed: 60
+  moveActionID: 2e31d85d-4d47-4150-af1c-811b8d4537a6
 --- !u!1 &1012190085645972279
 GameObject:
   m_ObjectHideFlags: 0
