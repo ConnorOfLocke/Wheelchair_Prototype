@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Input;
 using UnityEngine.InputSystem;
+using Utils;
 
 namespace Wheelchair
 {
@@ -10,15 +11,31 @@ namespace Wheelchair
     {
         [Header("Settings")]
         [SerializeField]
-        private float speed = 10.0f;
+        private float speed = 5.0f;
         [SerializeField]
-        private float rotationSpeed = 60.0f;
+        private float friction = 20.0f;
+        [SerializeField]
+        private float maxVelocity = 20.0f;
+
+        [SerializeField]
+        private float rotationSpeed = 10.0f;
+        [SerializeField]
+        private float rotationalFriction = 5.0f;
+        [SerializeField]
+        private float maxRotationVelocity = 2.5f;
 
         [SerializeField, ManagedInputAction]
         private string moveActionID = "";
 
-        private InputAction moveInputAction = null;
+        [Header("Debug")]
+        [SerializeField, ReadOnly]
         private bool moveInputDown = false;
+        [SerializeField, ReadOnly]
+        private float velocity = 0.0f;
+        [SerializeField, ReadOnly]
+        private float angularVelocity = 0.0f;
+
+        private InputAction moveInputAction = null;
 
         private void Awake()
         {
@@ -36,8 +53,10 @@ namespace Wheelchair
             if (moveInputDown)
             {
                 Vector2 inputVector = moveInputAction.ReadValue<Vector2>();
-                ApplyMovement(inputVector);
+                ApplyInput(inputVector);
             }
+
+            UpdateMovement();
         }
 
         private void HandleInput(InputAction.CallbackContext callbackContext)
@@ -48,13 +67,46 @@ namespace Wheelchair
             }
         }
 
-        private void ApplyMovement(Vector3 inputVector)
+        private void ApplyInput(Vector3 inputVector)
         {
             float addedSpeed = inputVector.y * speed * Time.deltaTime;
             float addedRotation = inputVector.x * rotationSpeed * Time.deltaTime;
 
-            transform.rotation = transform.rotation * Quaternion.AngleAxis(addedRotation, Vector3.up);
-            transform.position += transform.forward * addedSpeed;
+            velocity = Mathf.Clamp(velocity + addedSpeed, -maxVelocity, maxVelocity);
+            angularVelocity = Mathf.Clamp(angularVelocity + addedRotation, -maxRotationVelocity, maxRotationVelocity);
+        }
+
+
+        private void UpdateMovement()
+        {
+            transform.rotation = transform.rotation * Quaternion.AngleAxis(angularVelocity, Vector3.up);
+            transform.position += transform.forward * velocity;
+
+            //slow down speed
+            velocity = ApplyFriction(velocity, friction);
+            angularVelocity = ApplyFriction(angularVelocity, rotationalFriction);
+        }
+
+        private float ApplyFriction(float velocity, float friction)
+        {
+            float newVelocity = velocity;
+            if (newVelocity != 0)
+            {
+                float addedFriction = ((newVelocity > 0) ? -friction : friction) * Time.deltaTime;
+
+                //if the friction is more than the velocity, set it to 0
+                if ((newVelocity > 0 && newVelocity + addedFriction < 0) ||
+                    newVelocity < 0 && newVelocity + addedFriction > 0)
+                {
+                    newVelocity = 0;
+                }
+                else
+                {
+                    newVelocity += addedFriction;
+                }
+            }
+
+            return newVelocity;
         }
     }
 }

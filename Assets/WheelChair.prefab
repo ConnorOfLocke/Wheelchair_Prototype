@@ -417,6 +417,7 @@ MonoBehaviour:
     armTarget: {fileID: 1012190086248328676}
     minAngle: -60
     maxAngle: 10
+    movementBlendStrength: 0.1
     timeToAdjustArm: 0.3
     yAdjust: 0.2
     armAdjustCurve:
@@ -444,11 +445,18 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     startingArmAngle: 0
-    armAngle: 0
+    maxSpeedToFlail: 10
+    flailArmMoveStrength: 0.1
+    forwardFlailOffset: {x: -0.2, y: 1, z: 1}
+    backwardFlailOffset: {x: -0.2, y: 1, z: -1}
+    armAngle: -20.97742
+    isFlailing: 0
+    amountMoved: 0
   - wheel: {fileID: 1012190085981673391}
     armTarget: {fileID: 1012190087085556227}
     minAngle: -60
     maxAngle: 10
+    movementBlendStrength: 0.1
     timeToAdjustArm: 0.3
     yAdjust: 0.2
     armAdjustCurve:
@@ -476,8 +484,16 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     startingArmAngle: 0
+    maxSpeedToFlail: 10
+    flailArmMoveStrength: 0.1
+    forwardFlailOffset: {x: 0.2, y: 1, z: 1}
+    backwardFlailOffset: {x: 0.2, y: 1, z: -1}
     armAngle: 0
+    isFlailing: 0
+    amountMoved: 0
   angleSpeed: 90
+  syncArmAngles: 1
+  armSyncStrength: 0.01
 --- !u!95 &1012190085627277139
 Animator:
   serializedVersion: 4
@@ -526,9 +542,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a11f9e45d8affaf49a4dfdf730076c97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  rotationSpeed: 60
+  speed: 5
+  friction: 20
+  maxVelocity: 20
+  rotationSpeed: 10
+  rotationalFriction: 5
+  maxRotationVelocity: 2.5
   moveActionID: 2e31d85d-4d47-4150-af1c-811b8d4537a6
+  moveInputDown: 0
+  velocity: 0
+  angularVelocity: 0
 --- !u!1 &1012190085645972279
 GameObject:
   m_ObjectHideFlags: 0
